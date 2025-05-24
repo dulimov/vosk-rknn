@@ -1,0 +1,2 @@
+*.log
+\!conv_output.log
