@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys # Import sys for output redirection
 import numpy as np
 import onnx
 from onnx import helper, TensorProto, AttributeProto, shape_inference, numpy_helper
@@ -504,16 +505,58 @@ def convert_to_rknn(prepared_onnx_paths, calib_dataset_files):
         rknn.release()
 
 if __name__ == "__main__":
-    old_prepared_encoder = os.path.join(MODEL_DIR, "encoder_prepared.onnx")
-    if os.path.exists(old_prepared_encoder):
-        # print(f"Removing old {old_prepared_encoder}")
-        os.remove(old_prepared_encoder)
+    original_stdout = sys.stdout  # Save a reference to the original stdout
+    original_stderr = sys.stderr  # Save a reference to the original stderr
+    log_file_path = "conv_output.log"
+    
+    try:
+        print(f"--- Script output will be redirected to {log_file_path} ---") # This will go to console
+        log_file = open(log_file_path, 'w')
+        sys.stdout = log_file
+        sys.stderr = log_file
+        
+        # Original __main__ block code starts here
+        old_prepared_encoder = os.path.join(MODEL_DIR, "encoder_prepared.onnx")
+        if os.path.exists(old_prepared_encoder):
+            # print(f"Removing old {old_prepared_encoder}") # This will now go to log_file
+            os.remove(old_prepared_encoder)
 
-    if not download_models(): print("Download failed. Exiting."); exit(1)
-    prepared_onnx_files = prepare_onnx_models()
-    if not prepared_onnx_files or not all(p and os.path.exists(p) for p in prepared_onnx_files.values()): print("ONNX preparation failed or some files are missing. Exiting."); exit(1)
-    calibration_files = create_dummy_calibration_data()
-    convert_to_rknn(prepared_onnx_files, calibration_files)
-    print("\n--- Conversion process finished ---")
-    # print(f"Source ONNX models in: {MODEL_DIR}"); print(f"Prepared ONNX models in: {MODEL_DIR} (*_prepared.onnx)")
-    # print(f"Calibration data in: {CALIB_DIR}"); print(f"Converted RKNN models in: {RKNN_MODEL_DIR}")
+        if not download_models(): 
+            print("Download failed. Exiting."); # This will now go to log_file
+            sys.stdout = original_stdout # Restore for exit message
+            sys.stderr = original_stderr
+            original_stdout.write("Download failed. Exiting. Check conv_output.log for details.\n")
+            exit(1)
+
+        prepared_onnx_files = prepare_onnx_models()
+        if not prepared_onnx_files or not all(p and os.path.exists(p) for p in prepared_onnx_files.values()): 
+            print("ONNX preparation failed or some files are missing. Exiting."); # This will now go to log_file
+            sys.stdout = original_stdout # Restore for exit message
+            sys.stderr = original_stderr
+            original_stdout.write("ONNX preparation failed. Exiting. Check conv_output.log for details.\n")
+            exit(1)
+            
+        calibration_files = create_dummy_calibration_data()
+        convert_to_rknn(prepared_onnx_files, calibration_files)
+        
+        print("\n--- Conversion process finished ---") # This will now go to log_file
+        # print(f"Source ONNX models in: {MODEL_DIR}"); # This will now go to log_file
+        # print(f"Prepared ONNX models in: {MODEL_DIR} (*_prepared.onnx)") # This will now go to log_file
+        # print(f"Calibration data in: {CALIB_DIR}"); # This will now go to log_file
+        # print(f"Converted RKNN models in: {RKNN_MODEL_DIR}") # This will now go to log_file
+        # Original __main__ block code ends here
+            
+    except Exception as e:
+        # If any error occurs, print it to original stderr
+        sys.stdout = original_stdout # Restore stdout to print error to console
+        sys.stderr = original_stderr
+        print(f"An error occurred during script execution or logging setup: {e}")
+        # Optionally re-raise the exception if you want the script to halt
+        # raise 
+    finally:
+        # Ensure an attempt to close the log file and restore stdout/stderr happens
+        if 'log_file' in locals() and log_file and not log_file.closed:
+            log_file.close()
+        sys.stdout = original_stdout
+        sys.stderr = original_stderr
+        print(f"--- Script output finished. Log saved to {log_file_path} ---") # This will go to console
