@@ -14,6 +14,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder_embed/Unsqueeze, OpType: Unsqueeze
   InitialEncoderGraph: Node: /encoder_embed/conv/0/Conv, OpType: Conv
 !!!!!!!!!!!!!!!!!!!!   InitialEncoderGraph: TARGET NODE FOUND HERE: /encoder_embed/conv/0/Conv !!!!!!!!!!!!!!!!!!!!
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1, 1]
+      InitialEncoderGraph: group: 1
+      InitialEncoderGraph: kernel_shape: [3, 3]
+      InitialEncoderGraph: pads: [0, 1, 0, 1]
+      InitialEncoderGraph: strides: [1, 1]
   InitialEncoderGraph: Node: /encoder_embed/conv/3/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder_embed/conv/3/Sub, OpType: Sub
   InitialEncoderGraph: Node: /encoder_embed/conv/3/Constant_1, OpType: Constant
@@ -33,6 +39,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder_embed/conv/3/Constant_5, OpType: Constant
   InitialEncoderGraph: Node: /encoder_embed/conv/3/Sub_3, OpType: Sub
   InitialEncoderGraph: Node: /encoder_embed/conv/4/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1, 1]
+      InitialEncoderGraph: group: 1
+      InitialEncoderGraph: kernel_shape: [3, 3]
+      InitialEncoderGraph: pads: [0, 0, 0, 0]
+      InitialEncoderGraph: strides: [2, 2]
   InitialEncoderGraph: Node: /encoder_embed/conv/6/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder_embed/conv/6/Sub, OpType: Sub
   InitialEncoderGraph: Node: /encoder_embed/conv/6/Constant_1, OpType: Constant
@@ -52,6 +64,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder_embed/conv/6/Constant_5, OpType: Constant
   InitialEncoderGraph: Node: /encoder_embed/conv/6/Sub_3, OpType: Sub
   InitialEncoderGraph: Node: /encoder_embed/conv/7/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1, 1]
+      InitialEncoderGraph: group: 1
+      InitialEncoderGraph: kernel_shape: [3, 3]
+      InitialEncoderGraph: pads: [0, 0, 0, 0]
+      InitialEncoderGraph: strides: [1, 2]
   InitialEncoderGraph: Node: /encoder_embed/conv/9/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder_embed/conv/9/Sub, OpType: Sub
   InitialEncoderGraph: Node: /encoder_embed/conv/9/Constant_1, OpType: Constant
@@ -71,7 +89,19 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder_embed/conv/9/Constant_5, OpType: Constant
   InitialEncoderGraph: Node: /encoder_embed/conv/9/Sub_3, OpType: Sub
   InitialEncoderGraph: Node: /encoder_embed/convnext/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1, 1]
+      InitialEncoderGraph: group: 128
+      InitialEncoderGraph: kernel_shape: [7, 7]
+      InitialEncoderGraph: pads: [3, 3, 3, 3]
+      InitialEncoderGraph: strides: [1, 1]
   InitialEncoderGraph: Node: /encoder_embed/convnext/pointwise_conv1/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1, 1]
+      InitialEncoderGraph: group: 1
+      InitialEncoderGraph: kernel_shape: [1, 1]
+      InitialEncoderGraph: pads: [0, 0, 0, 0]
+      InitialEncoderGraph: strides: [1, 1]
   InitialEncoderGraph: Node: /encoder_embed/convnext/activation/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder_embed/convnext/activation/Sub, OpType: Sub
   InitialEncoderGraph: Node: /encoder_embed/convnext/activation/Constant_1, OpType: Constant
@@ -91,6 +121,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder_embed/convnext/activation/Constant_5, OpType: Constant
   InitialEncoderGraph: Node: /encoder_embed/convnext/activation/Sub_3, OpType: Sub
   InitialEncoderGraph: Node: /encoder_embed/convnext/pointwise_conv2/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1, 1]
+      InitialEncoderGraph: group: 1
+      InitialEncoderGraph: kernel_shape: [1, 1]
+      InitialEncoderGraph: pads: [0, 0, 0, 0]
+      InitialEncoderGraph: strides: [1, 1]
   InitialEncoderGraph: Node: /encoder_embed/convnext/Add, OpType: Add
   InitialEncoderGraph: Node: /encoder_embed/Shape, OpType: Shape
   InitialEncoderGraph: Node: /encoder_embed/Constant_2, OpType: Constant
@@ -746,6 +782,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/0/layers.0/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/0/layers.0/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/0/layers.0/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 192
+      InitialEncoderGraph: kernel_shape: [31]
+      InitialEncoderGraph: pads: [15, 15]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/0/layers.0/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/0/layers.0/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/0/layers.0/conv_module1/out_proj/Sub, OpType: Sub
@@ -848,6 +890,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/0/layers.0/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/0/layers.0/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/0/layers.0/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 192
+      InitialEncoderGraph: kernel_shape: [31]
+      InitialEncoderGraph: pads: [15, 15]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/0/layers.0/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/0/layers.0/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/0/layers.0/conv_module2/out_proj/Sub, OpType: Sub
@@ -1177,6 +1225,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/0/layers.1/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/0/layers.1/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/0/layers.1/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 192
+      InitialEncoderGraph: kernel_shape: [31]
+      InitialEncoderGraph: pads: [15, 15]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/0/layers.1/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/0/layers.1/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/0/layers.1/conv_module1/out_proj/Sub, OpType: Sub
@@ -1279,6 +1333,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/0/layers.1/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/0/layers.1/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/0/layers.1/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 192
+      InitialEncoderGraph: kernel_shape: [31]
+      InitialEncoderGraph: pads: [15, 15]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/0/layers.1/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/0/layers.1/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/0/layers.1/conv_module2/out_proj/Sub, OpType: Sub
@@ -1991,6 +2051,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/1/encoder/0/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/1/encoder/0/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/1/encoder/0/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 256
+      InitialEncoderGraph: kernel_shape: [31]
+      InitialEncoderGraph: pads: [15, 15]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/1/encoder/0/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/1/encoder/0/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/1/encoder/0/conv_module1/out_proj/Sub, OpType: Sub
@@ -2093,6 +2159,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/1/encoder/0/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/1/encoder/0/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/1/encoder/0/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 256
+      InitialEncoderGraph: kernel_shape: [31]
+      InitialEncoderGraph: pads: [15, 15]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/1/encoder/0/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/1/encoder/0/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/1/encoder/0/conv_module2/out_proj/Sub, OpType: Sub
@@ -2422,6 +2494,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/1/encoder/1/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/1/encoder/1/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/1/encoder/1/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 256
+      InitialEncoderGraph: kernel_shape: [31]
+      InitialEncoderGraph: pads: [15, 15]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/1/encoder/1/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/1/encoder/1/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/1/encoder/1/conv_module1/out_proj/Sub, OpType: Sub
@@ -2524,6 +2602,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/1/encoder/1/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/1/encoder/1/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/1/encoder/1/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 256
+      InitialEncoderGraph: kernel_shape: [31]
+      InitialEncoderGraph: pads: [15, 15]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/1/encoder/1/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/1/encoder/1/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/1/encoder/1/conv_module2/out_proj/Sub, OpType: Sub
@@ -3283,6 +3367,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/2/encoder/0/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/2/encoder/0/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/2/encoder/0/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 384
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/2/encoder/0/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/2/encoder/0/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/2/encoder/0/conv_module1/out_proj/Sub, OpType: Sub
@@ -3385,6 +3475,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/2/encoder/0/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/2/encoder/0/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/2/encoder/0/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 384
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/2/encoder/0/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/2/encoder/0/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/2/encoder/0/conv_module2/out_proj/Sub, OpType: Sub
@@ -3714,6 +3810,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/2/encoder/1/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/2/encoder/1/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/2/encoder/1/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 384
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/2/encoder/1/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/2/encoder/1/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/2/encoder/1/conv_module1/out_proj/Sub, OpType: Sub
@@ -3816,6 +3918,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/2/encoder/1/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/2/encoder/1/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/2/encoder/1/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 384
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/2/encoder/1/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/2/encoder/1/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/2/encoder/1/conv_module2/out_proj/Sub, OpType: Sub
@@ -4145,6 +4253,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/2/encoder/2/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/2/encoder/2/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/2/encoder/2/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 384
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/2/encoder/2/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/2/encoder/2/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/2/encoder/2/conv_module1/out_proj/Sub, OpType: Sub
@@ -4247,6 +4361,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/2/encoder/2/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/2/encoder/2/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/2/encoder/2/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 384
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/2/encoder/2/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/2/encoder/2/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/2/encoder/2/conv_module2/out_proj/Sub, OpType: Sub
@@ -5006,6 +5126,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/3/encoder/0/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/0/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/3/encoder/0/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 512
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/3/encoder/0/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/3/encoder/0/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/0/conv_module1/out_proj/Sub, OpType: Sub
@@ -5108,6 +5234,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/3/encoder/0/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/0/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/3/encoder/0/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 512
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/3/encoder/0/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/3/encoder/0/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/0/conv_module2/out_proj/Sub, OpType: Sub
@@ -5437,6 +5569,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/3/encoder/1/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/1/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/3/encoder/1/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 512
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/3/encoder/1/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/3/encoder/1/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/1/conv_module1/out_proj/Sub, OpType: Sub
@@ -5539,6 +5677,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/3/encoder/1/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/1/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/3/encoder/1/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 512
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/3/encoder/1/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/3/encoder/1/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/1/conv_module2/out_proj/Sub, OpType: Sub
@@ -5868,6 +6012,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/3/encoder/2/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/2/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/3/encoder/2/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 512
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/3/encoder/2/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/3/encoder/2/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/2/conv_module1/out_proj/Sub, OpType: Sub
@@ -5970,6 +6120,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/3/encoder/2/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/2/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/3/encoder/2/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 512
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/3/encoder/2/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/3/encoder/2/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/2/conv_module2/out_proj/Sub, OpType: Sub
@@ -6299,6 +6455,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/3/encoder/3/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/3/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/3/encoder/3/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 512
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/3/encoder/3/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/3/encoder/3/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/3/conv_module1/out_proj/Sub, OpType: Sub
@@ -6401,6 +6563,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/3/encoder/3/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/3/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/3/encoder/3/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 512
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/3/encoder/3/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/3/encoder/3/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/3/encoder/3/conv_module2/out_proj/Sub, OpType: Sub
@@ -7138,6 +7306,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/4/encoder/0/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/4/encoder/0/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/4/encoder/0/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 384
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/4/encoder/0/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/4/encoder/0/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/4/encoder/0/conv_module1/out_proj/Sub, OpType: Sub
@@ -7240,6 +7414,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/4/encoder/0/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/4/encoder/0/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/4/encoder/0/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 384
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/4/encoder/0/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/4/encoder/0/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/4/encoder/0/conv_module2/out_proj/Sub, OpType: Sub
@@ -7569,6 +7749,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/4/encoder/1/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/4/encoder/1/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/4/encoder/1/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 384
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/4/encoder/1/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/4/encoder/1/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/4/encoder/1/conv_module1/out_proj/Sub, OpType: Sub
@@ -7671,6 +7857,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/4/encoder/1/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/4/encoder/1/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/4/encoder/1/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 384
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/4/encoder/1/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/4/encoder/1/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/4/encoder/1/conv_module2/out_proj/Sub, OpType: Sub
@@ -8000,6 +8192,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/4/encoder/2/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/4/encoder/2/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/4/encoder/2/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 384
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/4/encoder/2/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/4/encoder/2/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/4/encoder/2/conv_module1/out_proj/Sub, OpType: Sub
@@ -8102,6 +8300,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/4/encoder/2/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/4/encoder/2/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/4/encoder/2/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 384
+      InitialEncoderGraph: kernel_shape: [15]
+      InitialEncoderGraph: pads: [7, 7]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/4/encoder/2/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/4/encoder/2/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/4/encoder/2/conv_module2/out_proj/Sub, OpType: Sub
@@ -8839,6 +9043,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/5/encoder/0/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/5/encoder/0/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/5/encoder/0/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 256
+      InitialEncoderGraph: kernel_shape: [31]
+      InitialEncoderGraph: pads: [15, 15]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/5/encoder/0/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/5/encoder/0/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/5/encoder/0/conv_module1/out_proj/Sub, OpType: Sub
@@ -8941,6 +9151,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/5/encoder/0/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/5/encoder/0/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/5/encoder/0/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 256
+      InitialEncoderGraph: kernel_shape: [31]
+      InitialEncoderGraph: pads: [15, 15]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/5/encoder/0/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/5/encoder/0/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/5/encoder/0/conv_module2/out_proj/Sub, OpType: Sub
@@ -9270,6 +9486,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/5/encoder/1/conv_module1/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/5/encoder/1/conv_module1/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/5/encoder/1/conv_module1/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 256
+      InitialEncoderGraph: kernel_shape: [31]
+      InitialEncoderGraph: pads: [15, 15]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/5/encoder/1/conv_module1/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/5/encoder/1/conv_module1/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/5/encoder/1/conv_module1/out_proj/Sub, OpType: Sub
@@ -9372,6 +9594,12 @@ InitialEncoderGraph: Graph: main_graph
   InitialEncoderGraph: Node: /encoder/5/encoder/1/conv_module2/Constant_6, OpType: Constant
   InitialEncoderGraph: Node: /encoder/5/encoder/1/conv_module2/Where, OpType: Where
   InitialEncoderGraph: Node: /encoder/5/encoder/1/conv_module2/depthwise_conv/Conv, OpType: Conv
+    InitialEncoderGraph: Conv Attributes:
+      InitialEncoderGraph: dilations: [1]
+      InitialEncoderGraph: group: 256
+      InitialEncoderGraph: kernel_shape: [31]
+      InitialEncoderGraph: pads: [15, 15]
+      InitialEncoderGraph: strides: [1]
   InitialEncoderGraph: Node: /encoder/5/encoder/1/conv_module2/Transpose_1, OpType: Transpose
   InitialEncoderGraph: Node: /encoder/5/encoder/1/conv_module2/out_proj/Constant, OpType: Constant
   InitialEncoderGraph: Node: /encoder/5/encoder/1/conv_module2/out_proj/Sub, OpType: Sub
@@ -9549,6 +9777,14 @@ InitialEncoderGraph: Graph: main_graph
 --- DEBUG: End of initial graph structure for encoder ---
 Attempting deep conversion for encoder input 'x' and Conv layers.
   Input 'x' is 3D, converting to 4D NCHW definition.
+--- DEBUG: Attributes of /encoder_embed/conv/0/Conv INSIDE convert_encoder_to_4d_nchw (after modification attempt) ---
+  Node: /encoder_embed/conv/0/Conv, OpType: Conv
+    dilations: [1, 1]
+    group: 1
+    kernel_shape: [3, 3]
+    pads: [0, 1, 0, 1]
+    strides: [1, 1]
+--- END DEBUG INSIDE convert_encoder_to_4d_nchw ---
   Deep conversion: Input def changed: True, Conv1D layers adapted: 32
 --- DEBUG: Graph structure for encoder (after convert_encoder_to_4d_nchw, before ensure_correct_conv_attributes) ---
 PostConvertEncoderGraph: Graph: main_graph
@@ -9562,6 +9798,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder_embed/Unsqueeze, OpType: Unsqueeze
   PostConvertEncoderGraph: Node: /encoder_embed/conv/0/Conv, OpType: Conv
 !!!!!!!!!!!!!!!!!!!!   PostConvertEncoderGraph: TARGET NODE FOUND HERE: /encoder_embed/conv/0/Conv !!!!!!!!!!!!!!!!!!!!
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1, 1]
+      PostConvertEncoderGraph: group: 1
+      PostConvertEncoderGraph: kernel_shape: [3, 3]
+      PostConvertEncoderGraph: pads: [0, 1, 0, 1]
+      PostConvertEncoderGraph: strides: [1, 1]
   PostConvertEncoderGraph: Node: /encoder_embed/conv/3/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder_embed/conv/3/Sub, OpType: Sub
   PostConvertEncoderGraph: Node: /encoder_embed/conv/3/Constant_1, OpType: Constant
@@ -9581,6 +9823,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder_embed/conv/3/Constant_5, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder_embed/conv/3/Sub_3, OpType: Sub
   PostConvertEncoderGraph: Node: /encoder_embed/conv/4/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1, 1]
+      PostConvertEncoderGraph: group: 1
+      PostConvertEncoderGraph: kernel_shape: [3, 3]
+      PostConvertEncoderGraph: pads: [0, 0, 0, 0]
+      PostConvertEncoderGraph: strides: [2, 2]
   PostConvertEncoderGraph: Node: /encoder_embed/conv/6/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder_embed/conv/6/Sub, OpType: Sub
   PostConvertEncoderGraph: Node: /encoder_embed/conv/6/Constant_1, OpType: Constant
@@ -9600,6 +9848,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder_embed/conv/6/Constant_5, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder_embed/conv/6/Sub_3, OpType: Sub
   PostConvertEncoderGraph: Node: /encoder_embed/conv/7/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1, 1]
+      PostConvertEncoderGraph: group: 1
+      PostConvertEncoderGraph: kernel_shape: [3, 3]
+      PostConvertEncoderGraph: pads: [0, 0, 0, 0]
+      PostConvertEncoderGraph: strides: [1, 2]
   PostConvertEncoderGraph: Node: /encoder_embed/conv/9/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder_embed/conv/9/Sub, OpType: Sub
   PostConvertEncoderGraph: Node: /encoder_embed/conv/9/Constant_1, OpType: Constant
@@ -9619,7 +9873,19 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder_embed/conv/9/Constant_5, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder_embed/conv/9/Sub_3, OpType: Sub
   PostConvertEncoderGraph: Node: /encoder_embed/convnext/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1, 1]
+      PostConvertEncoderGraph: group: 128
+      PostConvertEncoderGraph: kernel_shape: [7, 7]
+      PostConvertEncoderGraph: pads: [3, 3, 3, 3]
+      PostConvertEncoderGraph: strides: [1, 1]
   PostConvertEncoderGraph: Node: /encoder_embed/convnext/pointwise_conv1/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1, 1]
+      PostConvertEncoderGraph: group: 1
+      PostConvertEncoderGraph: kernel_shape: [1, 1]
+      PostConvertEncoderGraph: pads: [0, 0, 0, 0]
+      PostConvertEncoderGraph: strides: [1, 1]
   PostConvertEncoderGraph: Node: /encoder_embed/convnext/activation/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder_embed/convnext/activation/Sub, OpType: Sub
   PostConvertEncoderGraph: Node: /encoder_embed/convnext/activation/Constant_1, OpType: Constant
@@ -9639,6 +9905,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder_embed/convnext/activation/Constant_5, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder_embed/convnext/activation/Sub_3, OpType: Sub
   PostConvertEncoderGraph: Node: /encoder_embed/convnext/pointwise_conv2/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1, 1]
+      PostConvertEncoderGraph: group: 1
+      PostConvertEncoderGraph: kernel_shape: [1, 1]
+      PostConvertEncoderGraph: pads: [0, 0, 0, 0]
+      PostConvertEncoderGraph: strides: [1, 1]
   PostConvertEncoderGraph: Node: /encoder_embed/convnext/Add, OpType: Add
   PostConvertEncoderGraph: Node: /encoder_embed/Shape, OpType: Shape
   PostConvertEncoderGraph: Node: /encoder_embed/Constant_2, OpType: Constant
@@ -10294,6 +10566,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/0/layers.0/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/0/layers.0/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/0/layers.0/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 192
+      PostConvertEncoderGraph: pads: [15, 15]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 31]
   PostConvertEncoderGraph: Node: /encoder/0/layers.0/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/0/layers.0/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/0/layers.0/conv_module1/out_proj/Sub, OpType: Sub
@@ -10396,6 +10674,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/0/layers.0/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/0/layers.0/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/0/layers.0/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 192
+      PostConvertEncoderGraph: pads: [15, 15]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 31]
   PostConvertEncoderGraph: Node: /encoder/0/layers.0/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/0/layers.0/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/0/layers.0/conv_module2/out_proj/Sub, OpType: Sub
@@ -10725,6 +11009,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/0/layers.1/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/0/layers.1/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/0/layers.1/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 192
+      PostConvertEncoderGraph: pads: [15, 15]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 31]
   PostConvertEncoderGraph: Node: /encoder/0/layers.1/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/0/layers.1/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/0/layers.1/conv_module1/out_proj/Sub, OpType: Sub
@@ -10827,6 +11117,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/0/layers.1/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/0/layers.1/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/0/layers.1/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 192
+      PostConvertEncoderGraph: pads: [15, 15]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 31]
   PostConvertEncoderGraph: Node: /encoder/0/layers.1/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/0/layers.1/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/0/layers.1/conv_module2/out_proj/Sub, OpType: Sub
@@ -11539,6 +11835,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/1/encoder/0/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/1/encoder/0/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/1/encoder/0/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 256
+      PostConvertEncoderGraph: pads: [15, 15]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 31]
   PostConvertEncoderGraph: Node: /encoder/1/encoder/0/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/1/encoder/0/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/1/encoder/0/conv_module1/out_proj/Sub, OpType: Sub
@@ -11641,6 +11943,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/1/encoder/0/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/1/encoder/0/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/1/encoder/0/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 256
+      PostConvertEncoderGraph: pads: [15, 15]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 31]
   PostConvertEncoderGraph: Node: /encoder/1/encoder/0/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/1/encoder/0/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/1/encoder/0/conv_module2/out_proj/Sub, OpType: Sub
@@ -11970,6 +12278,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/1/encoder/1/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/1/encoder/1/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/1/encoder/1/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 256
+      PostConvertEncoderGraph: pads: [15, 15]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 31]
   PostConvertEncoderGraph: Node: /encoder/1/encoder/1/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/1/encoder/1/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/1/encoder/1/conv_module1/out_proj/Sub, OpType: Sub
@@ -12072,6 +12386,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/1/encoder/1/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/1/encoder/1/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/1/encoder/1/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 256
+      PostConvertEncoderGraph: pads: [15, 15]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 31]
   PostConvertEncoderGraph: Node: /encoder/1/encoder/1/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/1/encoder/1/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/1/encoder/1/conv_module2/out_proj/Sub, OpType: Sub
@@ -12831,6 +13151,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/2/encoder/0/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/2/encoder/0/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/2/encoder/0/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 384
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/2/encoder/0/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/2/encoder/0/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/2/encoder/0/conv_module1/out_proj/Sub, OpType: Sub
@@ -12933,6 +13259,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/2/encoder/0/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/2/encoder/0/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/2/encoder/0/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 384
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/2/encoder/0/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/2/encoder/0/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/2/encoder/0/conv_module2/out_proj/Sub, OpType: Sub
@@ -13262,6 +13594,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/2/encoder/1/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/2/encoder/1/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/2/encoder/1/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 384
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/2/encoder/1/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/2/encoder/1/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/2/encoder/1/conv_module1/out_proj/Sub, OpType: Sub
@@ -13364,6 +13702,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/2/encoder/1/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/2/encoder/1/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/2/encoder/1/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 384
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/2/encoder/1/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/2/encoder/1/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/2/encoder/1/conv_module2/out_proj/Sub, OpType: Sub
@@ -13693,6 +14037,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/2/encoder/2/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/2/encoder/2/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/2/encoder/2/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 384
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/2/encoder/2/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/2/encoder/2/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/2/encoder/2/conv_module1/out_proj/Sub, OpType: Sub
@@ -13795,6 +14145,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/2/encoder/2/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/2/encoder/2/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/2/encoder/2/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 384
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/2/encoder/2/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/2/encoder/2/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/2/encoder/2/conv_module2/out_proj/Sub, OpType: Sub
@@ -14554,6 +14910,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/3/encoder/0/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/0/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/3/encoder/0/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 512
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/3/encoder/0/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/3/encoder/0/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/0/conv_module1/out_proj/Sub, OpType: Sub
@@ -14656,6 +15018,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/3/encoder/0/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/0/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/3/encoder/0/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 512
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/3/encoder/0/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/3/encoder/0/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/0/conv_module2/out_proj/Sub, OpType: Sub
@@ -14985,6 +15353,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/3/encoder/1/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/1/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/3/encoder/1/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 512
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/3/encoder/1/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/3/encoder/1/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/1/conv_module1/out_proj/Sub, OpType: Sub
@@ -15087,6 +15461,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/3/encoder/1/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/1/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/3/encoder/1/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 512
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/3/encoder/1/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/3/encoder/1/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/1/conv_module2/out_proj/Sub, OpType: Sub
@@ -15416,6 +15796,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/3/encoder/2/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/2/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/3/encoder/2/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 512
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/3/encoder/2/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/3/encoder/2/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/2/conv_module1/out_proj/Sub, OpType: Sub
@@ -15518,6 +15904,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/3/encoder/2/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/2/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/3/encoder/2/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 512
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/3/encoder/2/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/3/encoder/2/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/2/conv_module2/out_proj/Sub, OpType: Sub
@@ -15847,6 +16239,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/3/encoder/3/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/3/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/3/encoder/3/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 512
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/3/encoder/3/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/3/encoder/3/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/3/conv_module1/out_proj/Sub, OpType: Sub
@@ -15949,6 +16347,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/3/encoder/3/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/3/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/3/encoder/3/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 512
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/3/encoder/3/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/3/encoder/3/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/3/encoder/3/conv_module2/out_proj/Sub, OpType: Sub
@@ -16686,6 +17090,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/4/encoder/0/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/4/encoder/0/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/4/encoder/0/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 384
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/4/encoder/0/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/4/encoder/0/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/4/encoder/0/conv_module1/out_proj/Sub, OpType: Sub
@@ -16788,6 +17198,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/4/encoder/0/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/4/encoder/0/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/4/encoder/0/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 384
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/4/encoder/0/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/4/encoder/0/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/4/encoder/0/conv_module2/out_proj/Sub, OpType: Sub
@@ -17117,6 +17533,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/4/encoder/1/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/4/encoder/1/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/4/encoder/1/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 384
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/4/encoder/1/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/4/encoder/1/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/4/encoder/1/conv_module1/out_proj/Sub, OpType: Sub
@@ -17219,6 +17641,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/4/encoder/1/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/4/encoder/1/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/4/encoder/1/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 384
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/4/encoder/1/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/4/encoder/1/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/4/encoder/1/conv_module2/out_proj/Sub, OpType: Sub
@@ -17548,6 +17976,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/4/encoder/2/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/4/encoder/2/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/4/encoder/2/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 384
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/4/encoder/2/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/4/encoder/2/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/4/encoder/2/conv_module1/out_proj/Sub, OpType: Sub
@@ -17650,6 +18084,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/4/encoder/2/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/4/encoder/2/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/4/encoder/2/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 384
+      PostConvertEncoderGraph: pads: [7, 7]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 15]
   PostConvertEncoderGraph: Node: /encoder/4/encoder/2/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/4/encoder/2/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/4/encoder/2/conv_module2/out_proj/Sub, OpType: Sub
@@ -18387,6 +18827,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/5/encoder/0/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/5/encoder/0/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/5/encoder/0/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 256
+      PostConvertEncoderGraph: pads: [15, 15]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 31]
   PostConvertEncoderGraph: Node: /encoder/5/encoder/0/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/5/encoder/0/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/5/encoder/0/conv_module1/out_proj/Sub, OpType: Sub
@@ -18489,6 +18935,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/5/encoder/0/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/5/encoder/0/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/5/encoder/0/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 256
+      PostConvertEncoderGraph: pads: [15, 15]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 31]
   PostConvertEncoderGraph: Node: /encoder/5/encoder/0/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/5/encoder/0/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/5/encoder/0/conv_module2/out_proj/Sub, OpType: Sub
@@ -18818,6 +19270,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/5/encoder/1/conv_module1/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/5/encoder/1/conv_module1/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/5/encoder/1/conv_module1/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 256
+      PostConvertEncoderGraph: pads: [15, 15]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 31]
   PostConvertEncoderGraph: Node: /encoder/5/encoder/1/conv_module1/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/5/encoder/1/conv_module1/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/5/encoder/1/conv_module1/out_proj/Sub, OpType: Sub
@@ -18920,6 +19378,12 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder/5/encoder/1/conv_module2/Constant_6, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/5/encoder/1/conv_module2/Where, OpType: Where
   PostConvertEncoderGraph: Node: /encoder/5/encoder/1/conv_module2/depthwise_conv/Conv, OpType: Conv
+    PostConvertEncoderGraph: Conv Attributes:
+      PostConvertEncoderGraph: dilations: [1]
+      PostConvertEncoderGraph: group: 256
+      PostConvertEncoderGraph: pads: [15, 15]
+      PostConvertEncoderGraph: strides: [1]
+      PostConvertEncoderGraph: kernel_shape: [1, 31]
   PostConvertEncoderGraph: Node: /encoder/5/encoder/1/conv_module2/Transpose_1, OpType: Transpose
   PostConvertEncoderGraph: Node: /encoder/5/encoder/1/conv_module2/out_proj/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder/5/encoder/1/conv_module2/out_proj/Sub, OpType: Sub
@@ -27443,5 +27907,5 @@ PostConvertEncoderGraph: Graph: main_graph
 --- Converting to RKNN ---
 
 Processing encoder model: vosk_models_onnx/encoder_prepared.onnx
-I Loading :   0%|                                                           | 0/717 [00:00<?, ?it/s]I Loading : 100%|██████████████████████████████████████████████| 717/717 [00:00<00:00, 13688.28it/s]
-I    FoldConstant :   0%|                                                  | 0/5324 [00:00<?, ?it/s]I    FoldConstant :   0%|                                         | 1/5324 [00:00<00:18, 288.63it/s]
+I Loading :   0%|                                                           | 0/717 [00:00<?, ?it/s]I Loading : 100%|██████████████████████████████████████████████| 717/717 [00:00<00:00, 13636.09it/s]
+I    FoldConstant :   0%|                                                  | 0/5324 [00:00<?, ?it/s]I    FoldConstant :   0%|                                         | 1/5324 [00:00<00:16, 331.15it/s]
