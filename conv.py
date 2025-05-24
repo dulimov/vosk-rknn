@@ -259,6 +259,22 @@ def ensure_correct_conv_attributes(model):
     else: print("  ensure_correct_conv_attributes: No changes made to Conv attributes.")
     return changes_made_tracker[0]
 
+def _debug_print_graph_nodes(current_graph, level=0, prefix=''):
+    """Recursively prints node names and op_types in a graph and its subgraphs."""
+    graph_name = current_graph.name if current_graph.name else "UnnamedGraph"
+    print(f"{'  '*level}{prefix}Graph: {graph_name}")
+    for node_idx, node in enumerate(current_graph.node):
+        node_name = node.name if node.name else f"UnnamedNodeIdx{node_idx}"
+        print(f"{'  '*(level+1)}{prefix}Node: {node_name}, OpType: {node.op_type}")
+        if node.name == '/encoder_embed/conv/0/Conv':
+            print(f"{'!!'*10} {'  '*(level+1)}{prefix}TARGET NODE FOUND HERE: {node.name} {'!!'*10}")
+        
+        sub_graphs = _get_graphs_from_node(node) # _get_graphs_from_node should be available
+        if sub_graphs:
+            for idx, sub_graph in enumerate(sub_graphs):
+                sub_graph_prefix = f"{prefix}Subgraph-{idx} of {node_name}: "
+                _debug_print_graph_nodes(sub_graph, level + 2, prefix=sub_graph_prefix)
+
 def convert_encoder_to_4d_nchw(model, encoder_x_input_name):
     print(f"Attempting deep conversion for encoder input '{encoder_x_input_name}' and Conv layers.")
     model_input_changed = False; conv_layers_adapted_count = 0
@@ -348,11 +364,27 @@ def prepare_onnx_models():
         ONNX_INPUT_NAMES[key] = [inp.name for inp in current_model_object.graph.input]
         
         if key == "encoder":
+            print(f"--- DEBUG: Initial graph structure for encoder (before convert_encoder_to_4d_nchw) ---")
+            if current_model_object and hasattr(current_model_object, 'graph'):
+                _debug_print_graph_nodes(current_model_object.graph, prefix="InitialEncoderGraph: ")
+            else:
+                print("--- DEBUG: current_model_object or its graph is None, cannot print structure ---")
+            print(f"--- DEBUG: End of initial graph structure for encoder ---")
+
             if convert_encoder_to_4d_nchw(current_model_object, ONNX_INPUT_NAMES[key][0]):
                 try: 
                     _, _, current_model_object = check_and_get_onnx_io_names(current_model_object, infer_shapes_locally=True, model_name_for_log=f"{key}_deep_conv_checked")
                     if not current_model_object : raise ValueError("Model invalid after deep_conv check")
-                except Exception as e_conv: print(f"ERROR after deep conv for {key}: {e_conv}. Reverting."); _, _, current_model_object = check_and_get_onnx_io_names(original_path)
+                except Exception as e_conv: 
+                    print(f"ERROR after deep conv for {key}: {e_conv}. Reverting."); 
+                    _, _, current_model_object = check_and_get_onnx_io_names(original_path) # Reload original
+            
+            print(f"--- DEBUG: Graph structure for encoder (after convert_encoder_to_4d_nchw, before ensure_correct_conv_attributes) ---")
+            if current_model_object and hasattr(current_model_object, 'graph'):
+                 _debug_print_graph_nodes(current_model_object.graph, prefix="PostConvertEncoderGraph: ")
+            else:
+                print("--- DEBUG: current_model_object or its graph is None after convert_encoder_to_4d_nchw, cannot print structure ---")
+            print(f"--- DEBUG: End of graph structure for encoder (after convert_encoder_to_4d_nchw) ---")
 
             ensure_correct_conv_attributes(current_model_object)
             
