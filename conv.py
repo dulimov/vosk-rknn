@@ -266,9 +266,22 @@ def _debug_print_graph_nodes(current_graph, level=0, prefix=''):
     print(f"{'  '*level}{prefix}Graph: {graph_name}")
     for node_idx, node in enumerate(current_graph.node):
         node_name = node.name if node.name else f"UnnamedNodeIdx{node_idx}"
-        print(f"{'  '*(level+1)}{prefix}Node: {node_name}, OpType: {node.op_type}")
+        indent = '  '*(level+1)
+        print(f"{indent}{prefix}Node: {node_name}, OpType: {node.op_type}")
+
         if node.name == '/encoder_embed/conv/0/Conv':
-            print(f"{'!!'*10} {'  '*(level+1)}{prefix}TARGET NODE FOUND HERE: {node.name} {'!!'*10}")
+            print(f"{'!!'*10} {indent}{prefix}TARGET NODE FOUND HERE: {node.name} {'!!'*10}")
+
+        if node.op_type == "Conv":
+            print(f"{indent}  {prefix}Conv Attributes:")
+            conv_attrs_to_log = ['kernel_shape', 'strides', 'pads', 'dilations', 'group', 'auto_pad']
+            logged_any_conv_attr = False
+            for attr in node.attribute:
+                if attr.name in conv_attrs_to_log:
+                    print(f"{indent}    {prefix}{attr.name}: {helper.get_attribute_value(attr)}")
+                    logged_any_conv_attr = True
+            if not logged_any_conv_attr:
+                 print(f"{indent}    {prefix}(No standard Conv attributes found or all are empty/default)")
         
         sub_graphs = _get_graphs_from_node(node) # _get_graphs_from_node should be available
         if sub_graphs:
@@ -316,6 +329,15 @@ def convert_encoder_to_4d_nchw(model, encoder_x_input_name):
                 if k_shape_attr: node.attribute.remove(k_shape_attr)
                 node.attribute.append(helper.make_attribute("kernel_shape", [new_k_H, new_k_W]))
                 conv_layers_adapted_count +=1
+            
+            # ADD THIS BLOCK START
+            if node.name == "/encoder_embed/conv/0/Conv":
+                print(f"--- DEBUG: Attributes of /encoder_embed/conv/0/Conv INSIDE convert_encoder_to_4d_nchw (after modification attempt) ---")
+                print(f"  Node: {node.name}, OpType: {node.op_type}")
+                for attr in node.attribute:
+                    print(f"    {attr.name}: {helper.get_attribute_value(attr)}")
+                print(f"--- END DEBUG INSIDE convert_encoder_to_4d_nchw ---")
+            # ADD THIS BLOCK END
     
     for old_init in initializers_to_remove: model.graph.initializer.remove(old_init)
     for new_init in initializers_to_add: model.graph.initializer.append(new_init)
