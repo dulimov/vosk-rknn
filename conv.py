@@ -82,63 +82,117 @@ def ensure_correct_conv_attributes(model):
         if node.op_type != 'Conv':
             continue
 
-        k_shape_attr = next((a for a in node.attribute if a.name == 'kernel_shape'), None)
-        if not k_shape_attr: 
-            # print(f"    WARNING: Conv node {node.name} has no kernel_shape! Skipping attr fix for it.")
-            continue # Cannot determine kernel_rank without kernel_shape
-        kernel_rank = len(k_shape_attr.ints)
+        node_name = node.name if node.name else f"Unnamed Conv Node {node_idx}"
 
-        # 1. Dilations
+        k_shape_attr = next((a for a in node.attribute if a.name == 'kernel_shape'), None)
+        if not k_shape_attr:
+            print(f"    WARNING: Conv node '{node_name}' has no kernel_shape attribute. Skipping attribute fix for this node.")
+            continue
+        kernel_rank = len(k_shape_attr.ints)
+        if kernel_rank not in [1, 2]: # Extendable to 3 if needed
+            print(f"    WARNING: Conv node '{node_name}' has unsupported kernel_rank {kernel_rank}. Skipping attribute fix for this node.")
+            continue
+
+        # 1. Dilations Attribute Handling
         dil_attr = next((a for a in node.attribute if a.name == 'dilations'), None)
-        current_dilations = list(dil_attr.ints) if dil_attr and hasattr(dil_attr, 'ints') else [] # Ensure .ints exists
-        
-        expected_dilations = [1] * kernel_rank 
-        if kernel_rank == 2 and len(current_dilations) == 1: 
-            expected_dilations = [1, current_dilations[0]]
-        
-        if list(current_dilations) != expected_dilations or not dil_attr:
+        current_dilations_val = list(dil_attr.ints) if dil_attr and hasattr(dil_attr, 'ints') and dil_attr.ints is not None else None
+        expected_dilations = [1] * kernel_rank
+
+        needs_update_dilations = False
+        if dil_attr is None:
+            needs_update_dilations = True
+            # print(f"    Node '{node_name}': 'dilations' attribute missing.")
+        elif len(current_dilations_val) != kernel_rank:
+            needs_update_dilations = True
+            # print(f"    Node '{node_name}': 'dilations' length {len(current_dilations_val)} incorrect for kernel_rank {kernel_rank}.")
+        elif not all(d > 0 for d in current_dilations_val): # Basic validity check
+            needs_update_dilations = True
+            # print(f"    Node '{node_name}': 'dilations' {current_dilations_val} contains non-positive values.")
+        # If problem asks to strictly set to [1,1] or [1] if different, uncomment below
+        # elif current_dilations_val != expected_dilations:
+            # needs_update_dilations = True
+            # print(f"    Node '{node_name}': 'dilations' {current_dilations_val} is not the default {expected_dilations}.")
+
+
+        if needs_update_dilations:
             if dil_attr: node.attribute.remove(dil_attr)
             node.attribute.append(helper.make_attribute('dilations', expected_dilations))
-            # if list(current_dilations) != expected_dilations : print(f"    Node {node.name}: CORRECTED dilations from {current_dilations} to {expected_dilations}.")
-            # else: print(f"    Node {node.name}: ADDED default dilations {expected_dilations}.")
+            print(f"    Node '{node_name}': Corrected 'dilations'. Old: {current_dilations_val}, New: {expected_dilations}")
             made_changes_overall = True
-        
-        # 2. Strides
-        str_attr = next((a for a in node.attribute if a.name == 'strides'), None)
-        current_strides = list(str_attr.ints) if str_attr and hasattr(str_attr, 'ints') else []
-        expected_strides = [1] * kernel_rank
-        if kernel_rank == 2 and len(current_strides) == 1: 
-            expected_strides = [1, current_strides[0]]
 
-        if list(current_strides) != expected_strides or not str_attr:
+        # 2. Strides Attribute Handling
+        str_attr = next((a for a in node.attribute if a.name == 'strides'), None)
+        current_strides_val = list(str_attr.ints) if str_attr and hasattr(str_attr, 'ints') and str_attr.ints is not None else None
+        expected_strides = [1] * kernel_rank
+
+        needs_update_strides = False
+        if str_attr is None:
+            needs_update_strides = True
+        elif len(current_strides_val) != kernel_rank:
+            needs_update_strides = True
+        elif not all(s > 0 for s in current_strides_val): # Basic validity check
+             needs_update_strides = True
+        # elif current_strides_val != expected_strides: # If strict default is needed
+            # needs_update_strides = True
+
+        if needs_update_strides:
+            old_strides_for_log = current_strides_val if current_strides_val is not None else "Not set"
             if str_attr: node.attribute.remove(str_attr)
             node.attribute.append(helper.make_attribute('strides', expected_strides))
-            # if list(current_strides) != expected_strides: print(f"    Node {node.name}: CORRECTED strides from {current_strides} to {expected_strides}.")
-            # else: print(f"    Node {node.name}: ADDED default strides {expected_strides}.")
+            print(f"    Node '{node_name}': Corrected 'strides'. Old: {old_strides_for_log}, New: {expected_strides}")
             made_changes_overall = True
 
-        # 3. Pads
+        # 3. Pads Attribute Handling
         pads_attr = next((a for a in node.attribute if a.name == 'pads'), None)
-        current_pads = list(pads_attr.ints) if pads_attr and hasattr(pads_attr, 'ints') else []
+        current_pads_val = list(pads_attr.ints) if pads_attr and hasattr(pads_attr, 'ints') and pads_attr.ints is not None else None
         auto_pad_val = next((helper.get_attribute_value(a) for a in node.attribute if a.name == 'auto_pad'), "NOTSET").upper()
         
         expected_pads_len = kernel_rank * 2
+        expected_pads = [0] * expected_pads_len
+
+        needs_update_pads = False
         if auto_pad_val == "NOTSET":
-            if not pads_attr or len(current_pads) != expected_pads_len:
-                new_pads = [0] * expected_pads_len 
-                if kernel_rank == 2 and len(current_pads) == 2 and k_shape_attr.ints[0] == 1: # kH=1
-                    new_pads = [0, current_pads[0], 0, current_pads[1]]
-                
-                if pads_attr: node.attribute.remove(pads_attr)
-                node.attribute.append(helper.make_attribute("pads", new_pads)); made_changes_overall = True
-                # if new_pads != current_pads : print(f"    Node {node.name}: SET pads to {new_pads}.")
+            if pads_attr is None:
+                needs_update_pads = True
+            elif len(current_pads_val) != expected_pads_len:
+                # Preserve specific existing logic for 2-element pads when kH=1 for rank 2
+                if kernel_rank == 2 and len(current_pads_val) == 2 and k_shape_attr.ints[0] == 1:
+                    expected_pads = [0, current_pads_val[0], 0, current_pads_val[1]]
+                    if current_pads_val != expected_pads : # only update if it changes after this adjustment
+                        needs_update_pads = True
+                else:
+                    needs_update_pads = True
+            # Optional: check if current_pads_val are all >= 0 if it exists and has correct length
+
+        if needs_update_pads:
+            old_pads_for_log = current_pads_val if current_pads_val is not None else "Not set"
+            if pads_attr: node.attribute.remove(pads_attr)
+            node.attribute.append(helper.make_attribute("pads", expected_pads))
+            print(f"    Node '{node_name}': Corrected 'pads' (auto_pad={auto_pad_val}). Old: {old_pads_for_log}, New: {expected_pads}")
+            made_changes_overall = True
         
-        # 4. Group
+        # 4. Group Attribute Handling
         group_attr = next((a for a in node.attribute if a.name == 'group'), None)
-        if not group_attr : node.attribute.append(helper.make_attribute("group", 1)); made_changes_overall = True
-        elif group_attr.i < 1 : group_attr.i = 1; made_changes_overall = True
+        current_group_val = group_attr.i if group_attr and hasattr(group_attr, 'i') else None
+
+        needs_update_group = False
+        if group_attr is None:
+            needs_update_group = True
+            # print(f"    Node '{node_name}': 'group' attribute missing.")
+        elif current_group_val < 1:
+            needs_update_group = True
+            # print(f"    Node '{node_name}': 'group' attribute {current_group_val} is < 1.")
+
+        if needs_update_group:
+            old_group_for_log = current_group_val if current_group_val is not None else "Not set"
+            new_group_val = 1
+            if group_attr: node.attribute.remove(group_attr) # remove old to change type or value
+            node.attribute.append(helper.make_attribute("group", new_group_val))
+            print(f"    Node '{node_name}': Corrected 'group'. Old: {old_group_for_log}, New: {new_group_val}")
+            made_changes_overall = True
             
     if made_changes_overall: print("  ensure_correct_conv_attributes: Changes made to some Conv attributes.")
+    else: print("  ensure_correct_conv_attributes: No changes made to Conv attributes.")
     return made_changes_overall
 
 def convert_encoder_to_4d_nchw(model, encoder_x_input_name):
