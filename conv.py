@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys # Import sys for output redirection
 import numpy as np
 import onnx
 from onnx import helper, TensorProto, AttributeProto, shape_inference, numpy_helper
@@ -75,21 +76,111 @@ def check_and_get_onnx_io_names(model_path_or_proto, infer_shapes_locally=False,
         print(f"Error loading or checking ONNX model '{model_path_or_proto if isinstance(model_path_or_proto, str) else model_name_for_log}': {e}")
         return None, None, None
 
+def _get_graphs_from_node(node):
+    graphs = []
+    for attr in node.attribute:
+        if attr.type == AttributeProto.GRAPH:
+            graphs.append(attr.g)
+        elif attr.type == AttributeProto.GRAPHS:
+            graphs.extend(list(attr.graphs))
+    return graphs
+
+def _find_and_modify_node_recursively(current_graph, target_node_name, target_op_type, changes_made_list):
+    for node_idx, node in enumerate(current_graph.node):
+        node_name_for_log = node.name if node.name else f"Unnamed Node {node_idx} in graph {current_graph.name}"
+        
+        if node.name == target_node_name and node.op_type == target_op_type:
+            print(f"    Target node '{node.name}' ({node.op_type}) found in graph '{current_graph.name}'.")
+            
+            print(f"      Attributes for '{node.name}' before specific fix:")
+            for attr_log in node.attribute:
+                if attr_log.name in ['kernel_shape', 'dilations', 'strides', 'pads', 'auto_pad']:
+                    print(f"        {attr_log.name}: {helper.get_attribute_value(attr_log)}")
+
+            specific_node_changed_here = False
+            # Dilations: Force set to [1, 1]
+            dil_attr_specific = next((a for a in node.attribute if a.name == 'dilations'), None)
+            old_dilations_specific = list(dil_attr_specific.ints) if dil_attr_specific and hasattr(dil_attr_specific, 'ints') else "Not set"
+            if dil_attr_specific: node.attribute.remove(dil_attr_specific)
+            node.attribute.append(helper.make_attribute('dilations', [1, 1]))
+            print(f"      Node '{node.name}': SPECIFIC FIX - Set 'dilations'. Old: {old_dilations_specific}, New: [1, 1]")
+            specific_node_changed_here = True
+            
+            # Strides: Force set to [1, 1]
+            str_attr_specific = next((a for a in node.attribute if a.name == 'strides'), None)
+            old_strides_specific = list(str_attr_specific.ints) if str_attr_specific and hasattr(str_attr_specific, 'ints') else "Not set"
+            if old_strides_specific != [1,1]: # Only change if not already [1,1]
+                if str_attr_specific: node.attribute.remove(str_attr_specific)
+                node.attribute.append(helper.make_attribute('strides', [1, 1]))
+                print(f"      Node '{node.name}': SPECIFIC FIX - Set 'strides'. Old: {old_strides_specific}, New: [1, 1]")
+                specific_node_changed_here = True
+            
+            # Pads: Force set to [0,0,0,0] if auto_pad is NOTSET
+            pads_attr_specific = next((a for a in node.attribute if a.name == 'pads'), None)
+            auto_pad_specific = next((helper.get_attribute_value(a) for a in node.attribute if a.name == 'auto_pad'), "NOTSET").upper()
+            old_pads_specific = list(pads_attr_specific.ints) if pads_attr_specific and hasattr(pads_attr_specific, 'ints') else "Not set"
+
+            if auto_pad_specific == "NOTSET":
+                if old_pads_specific != [0,0,0,0]: # Only change if not already [0,0,0,0]
+                    if pads_attr_specific: node.attribute.remove(pads_attr_specific)
+                    node.attribute.append(helper.make_attribute('pads', [0,0,0,0]))
+                    print(f"      Node '{node.name}': SPECIFIC FIX - Set 'pads'. Old: {old_pads_specific}, New: [0,0,0,0]")
+                    specific_node_changed_here = True
+            
+            if specific_node_changed_here:
+                changes_made_list[0] = True
+            return # Target found and processed, stop searching this branch
+
+        sub_graphs = _get_graphs_from_node(node)
+        if sub_graphs:
+            print(f"    Recursively searching in subgraphs of node '{node_name_for_log}' ({node.op_type}). Graph: '{current_graph.name}'")
+            for sub_graph_idx, sub_graph in enumerate(sub_graphs):
+                sub_graph_name_for_log = sub_graph.name if sub_graph.name else f"Unnamed SubGraph {sub_graph_idx} of {node_name_for_log}"
+                # print(f"      Entering subgraph: {sub_graph_name_for_log}")
+                _find_and_modify_node_recursively(sub_graph, target_node_name, target_op_type, changes_made_list)
+                if changes_made_list[0]: # If target found and modified in a subgraph
+                    # print(f"      Target found in subgraph {sub_graph_name_for_log}. Returning up.")
+                    return # Stop further searching in other subgraphs of this node or other nodes in current_graph
+
 def ensure_correct_conv_attributes(model):
     print("  Running ensure_correct_conv_attributes...")
-    made_changes_overall = False
+    changes_made_tracker = [False] # Use a list to pass by reference
+
+    target_node_name = '/encoder_embed/conv/0/Conv'
+    target_op_type = 'Conv'
+    
+    print(f"  Starting recursive search for target node: {target_node_name} ({target_op_type})")
+    _find_and_modify_node_recursively(model.graph, target_node_name, target_op_type, changes_made_tracker)
+    if changes_made_tracker[0]:
+        print(f"  Target node {target_node_name} was found and modified.")
+    else:
+        print(f"  Target node {target_node_name} was NOT found during recursive search.")
+
+    print("\n  Processing TOP-LEVEL nodes for general Conv attribute correction...")
     for node_idx, node in enumerate(model.graph.node):
+        node_name = node.name if node.name else f"Unnamed Top-Level Node {node_idx}"
+        print(f"  Processing top-level node: {node_name}, OpType: {node.op_type}")
+
         if node.op_type != 'Conv':
             continue
+        
+        if node.name == target_node_name:
+            print(f"    Skipping general checks for already processed target node: {node.name}")
+            continue
 
-        node_name = node.name if node.name else f"Unnamed Conv Node {node_idx}"
-
+        print(f"    Conv Node Initial Attrs ({node_name}):")
+        for attr in node.attribute:
+            if attr.name in ['kernel_shape', 'dilations', 'strides', 'pads', 'auto_pad', 'group']:
+                print(f"      {attr.name}: {helper.get_attribute_value(attr)}")
+        
+        # General Conv attribute correction logic (from previous version)
+        made_general_changes_this_node = False
         k_shape_attr = next((a for a in node.attribute if a.name == 'kernel_shape'), None)
         if not k_shape_attr:
             print(f"    WARNING: Conv node '{node_name}' has no kernel_shape attribute. Skipping attribute fix for this node.")
             continue
         kernel_rank = len(k_shape_attr.ints)
-        if kernel_rank not in [1, 2]: # Extendable to 3 if needed
+        if kernel_rank not in [1, 2]: 
             print(f"    WARNING: Conv node '{node_name}' has unsupported kernel_rank {kernel_rank}. Skipping attribute fix for this node.")
             continue
 
@@ -97,103 +188,93 @@ def ensure_correct_conv_attributes(model):
         dil_attr = next((a for a in node.attribute if a.name == 'dilations'), None)
         current_dilations_val = list(dil_attr.ints) if dil_attr and hasattr(dil_attr, 'ints') and dil_attr.ints is not None else None
         expected_dilations = [1] * kernel_rank
-
         needs_update_dilations = False
-        if dil_attr is None:
-            needs_update_dilations = True
-            # print(f"    Node '{node_name}': 'dilations' attribute missing.")
-        elif len(current_dilations_val) != kernel_rank:
-            needs_update_dilations = True
-            # print(f"    Node '{node_name}': 'dilations' length {len(current_dilations_val)} incorrect for kernel_rank {kernel_rank}.")
-        elif not all(d > 0 for d in current_dilations_val): # Basic validity check
-            needs_update_dilations = True
-            # print(f"    Node '{node_name}': 'dilations' {current_dilations_val} contains non-positive values.")
-        # If problem asks to strictly set to [1,1] or [1] if different, uncomment below
-        # elif current_dilations_val != expected_dilations:
-            # needs_update_dilations = True
-            # print(f"    Node '{node_name}': 'dilations' {current_dilations_val} is not the default {expected_dilations}.")
-
-
+        if dil_attr is None: needs_update_dilations = True
+        elif len(current_dilations_val) != kernel_rank: needs_update_dilations = True
+        elif not all(d > 0 for d in current_dilations_val): needs_update_dilations = True
+        
         if needs_update_dilations:
+            old_dil_for_log = current_dilations_val if current_dilations_val is not None else "Not set"
             if dil_attr: node.attribute.remove(dil_attr)
             node.attribute.append(helper.make_attribute('dilations', expected_dilations))
-            print(f"    Node '{node_name}': Corrected 'dilations'. Old: {current_dilations_val}, New: {expected_dilations}")
-            made_changes_overall = True
+            print(f"    Node '{node_name}': GENERAL Corrected 'dilations'. Old: {old_dil_for_log}, New: {expected_dilations}")
+            made_general_changes_this_node = True
 
         # 2. Strides Attribute Handling
         str_attr = next((a for a in node.attribute if a.name == 'strides'), None)
         current_strides_val = list(str_attr.ints) if str_attr and hasattr(str_attr, 'ints') and str_attr.ints is not None else None
         expected_strides = [1] * kernel_rank
-
         needs_update_strides = False
-        if str_attr is None:
-            needs_update_strides = True
-        elif len(current_strides_val) != kernel_rank:
-            needs_update_strides = True
-        elif not all(s > 0 for s in current_strides_val): # Basic validity check
-             needs_update_strides = True
-        # elif current_strides_val != expected_strides: # If strict default is needed
-            # needs_update_strides = True
+        if str_attr is None: needs_update_strides = True
+        elif len(current_strides_val) != kernel_rank: needs_update_strides = True
+        elif not all(s > 0 for s in current_strides_val): needs_update_strides = True
 
         if needs_update_strides:
             old_strides_for_log = current_strides_val if current_strides_val is not None else "Not set"
             if str_attr: node.attribute.remove(str_attr)
             node.attribute.append(helper.make_attribute('strides', expected_strides))
-            print(f"    Node '{node_name}': Corrected 'strides'. Old: {old_strides_for_log}, New: {expected_strides}")
-            made_changes_overall = True
+            print(f"    Node '{node_name}': GENERAL Corrected 'strides'. Old: {old_strides_for_log}, New: {expected_strides}")
+            made_general_changes_this_node = True
 
         # 3. Pads Attribute Handling
         pads_attr = next((a for a in node.attribute if a.name == 'pads'), None)
         current_pads_val = list(pads_attr.ints) if pads_attr and hasattr(pads_attr, 'ints') and pads_attr.ints is not None else None
         auto_pad_val = next((helper.get_attribute_value(a) for a in node.attribute if a.name == 'auto_pad'), "NOTSET").upper()
-        
         expected_pads_len = kernel_rank * 2
         expected_pads = [0] * expected_pads_len
-
         needs_update_pads = False
         if auto_pad_val == "NOTSET":
-            if pads_attr is None:
-                needs_update_pads = True
+            if pads_attr is None: needs_update_pads = True
             elif len(current_pads_val) != expected_pads_len:
-                # Preserve specific existing logic for 2-element pads when kH=1 for rank 2
-                if kernel_rank == 2 and len(current_pads_val) == 2 and k_shape_attr.ints[0] == 1:
+                if kernel_rank == 2 and len(current_pads_val) == 2 and k_shape_attr.ints[0] == 1: # kH=1
                     expected_pads = [0, current_pads_val[0], 0, current_pads_val[1]]
-                    if current_pads_val != expected_pads : # only update if it changes after this adjustment
-                        needs_update_pads = True
-                else:
-                    needs_update_pads = True
-            # Optional: check if current_pads_val are all >= 0 if it exists and has correct length
+                    if current_pads_val != expected_pads : needs_update_pads = True
+                else: needs_update_pads = True
 
         if needs_update_pads:
             old_pads_for_log = current_pads_val if current_pads_val is not None else "Not set"
             if pads_attr: node.attribute.remove(pads_attr)
             node.attribute.append(helper.make_attribute("pads", expected_pads))
-            print(f"    Node '{node_name}': Corrected 'pads' (auto_pad={auto_pad_val}). Old: {old_pads_for_log}, New: {expected_pads}")
-            made_changes_overall = True
+            print(f"    Node '{node_name}': GENERAL Corrected 'pads' (auto_pad={auto_pad_val}). Old: {old_pads_for_log}, New: {expected_pads}")
+            made_general_changes_this_node = True
         
         # 4. Group Attribute Handling
         group_attr = next((a for a in node.attribute if a.name == 'group'), None)
         current_group_val = group_attr.i if group_attr and hasattr(group_attr, 'i') else None
-
         needs_update_group = False
-        if group_attr is None:
-            needs_update_group = True
-            # print(f"    Node '{node_name}': 'group' attribute missing.")
-        elif current_group_val < 1:
-            needs_update_group = True
-            # print(f"    Node '{node_name}': 'group' attribute {current_group_val} is < 1.")
+        if group_attr is None: needs_update_group = True
+        elif current_group_val < 1: needs_update_group = True
 
         if needs_update_group:
             old_group_for_log = current_group_val if current_group_val is not None else "Not set"
             new_group_val = 1
-            if group_attr: node.attribute.remove(group_attr) # remove old to change type or value
+            if group_attr: node.attribute.remove(group_attr) 
             node.attribute.append(helper.make_attribute("group", new_group_val))
-            print(f"    Node '{node_name}': Corrected 'group'. Old: {old_group_for_log}, New: {new_group_val}")
-            made_changes_overall = True
+            print(f"    Node '{node_name}': GENERAL Corrected 'group'. Old: {old_group_for_log}, New: {new_group_val}")
+            made_general_changes_this_node = True
+        
+        if made_general_changes_this_node:
+            changes_made_tracker[0] = True
             
-    if made_changes_overall: print("  ensure_correct_conv_attributes: Changes made to some Conv attributes.")
+    if changes_made_tracker[0]: print("  ensure_correct_conv_attributes: Changes made to some Conv attributes (either specific or general).")
     else: print("  ensure_correct_conv_attributes: No changes made to Conv attributes.")
-    return made_changes_overall
+    return changes_made_tracker[0]
+
+def _debug_print_graph_nodes(current_graph, level=0, prefix=''):
+    """Recursively prints node names and op_types in a graph and its subgraphs."""
+    graph_name = current_graph.name if current_graph.name else "UnnamedGraph"
+    print(f"{'  '*level}{prefix}Graph: {graph_name}")
+    for node_idx, node in enumerate(current_graph.node):
+        node_name = node.name if node.name else f"UnnamedNodeIdx{node_idx}"
+        print(f"{'  '*(level+1)}{prefix}Node: {node_name}, OpType: {node.op_type}")
+        if node.name == '/encoder_embed/conv/0/Conv':
+            print(f"{'!!'*10} {'  '*(level+1)}{prefix}TARGET NODE FOUND HERE: {node.name} {'!!'*10}")
+        
+        sub_graphs = _get_graphs_from_node(node) # _get_graphs_from_node should be available
+        if sub_graphs:
+            for idx, sub_graph in enumerate(sub_graphs):
+                sub_graph_prefix = f"{prefix}Subgraph-{idx} of {node_name}: "
+                _debug_print_graph_nodes(sub_graph, level + 2, prefix=sub_graph_prefix)
 
 def convert_encoder_to_4d_nchw(model, encoder_x_input_name):
     print(f"Attempting deep conversion for encoder input '{encoder_x_input_name}' and Conv layers.")
@@ -284,11 +365,27 @@ def prepare_onnx_models():
         ONNX_INPUT_NAMES[key] = [inp.name for inp in current_model_object.graph.input]
         
         if key == "encoder":
+            print(f"--- DEBUG: Initial graph structure for encoder (before convert_encoder_to_4d_nchw) ---")
+            if current_model_object and hasattr(current_model_object, 'graph'):
+                _debug_print_graph_nodes(current_model_object.graph, prefix="InitialEncoderGraph: ")
+            else:
+                print("--- DEBUG: current_model_object or its graph is None, cannot print structure ---")
+            print(f"--- DEBUG: End of initial graph structure for encoder ---")
+
             if convert_encoder_to_4d_nchw(current_model_object, ONNX_INPUT_NAMES[key][0]):
                 try: 
                     _, _, current_model_object = check_and_get_onnx_io_names(current_model_object, infer_shapes_locally=True, model_name_for_log=f"{key}_deep_conv_checked")
                     if not current_model_object : raise ValueError("Model invalid after deep_conv check")
-                except Exception as e_conv: print(f"ERROR after deep conv for {key}: {e_conv}. Reverting."); _, _, current_model_object = check_and_get_onnx_io_names(original_path)
+                except Exception as e_conv: 
+                    print(f"ERROR after deep conv for {key}: {e_conv}. Reverting."); 
+                    _, _, current_model_object = check_and_get_onnx_io_names(original_path) # Reload original
+            
+            print(f"--- DEBUG: Graph structure for encoder (after convert_encoder_to_4d_nchw, before ensure_correct_conv_attributes) ---")
+            if current_model_object and hasattr(current_model_object, 'graph'):
+                 _debug_print_graph_nodes(current_model_object.graph, prefix="PostConvertEncoderGraph: ")
+            else:
+                print("--- DEBUG: current_model_object or its graph is None after convert_encoder_to_4d_nchw, cannot print structure ---")
+            print(f"--- DEBUG: End of graph structure for encoder (after convert_encoder_to_4d_nchw) ---")
 
             ensure_correct_conv_attributes(current_model_object)
             
@@ -408,16 +505,58 @@ def convert_to_rknn(prepared_onnx_paths, calib_dataset_files):
         rknn.release()
 
 if __name__ == "__main__":
-    old_prepared_encoder = os.path.join(MODEL_DIR, "encoder_prepared.onnx")
-    if os.path.exists(old_prepared_encoder):
-        # print(f"Removing old {old_prepared_encoder}")
-        os.remove(old_prepared_encoder)
+    original_stdout = sys.stdout  # Save a reference to the original stdout
+    original_stderr = sys.stderr  # Save a reference to the original stderr
+    log_file_path = "conv_output.log"
+    
+    try:
+        print(f"--- Script output will be redirected to {log_file_path} ---") # This will go to console
+        log_file = open(log_file_path, 'w')
+        sys.stdout = log_file
+        sys.stderr = log_file
+        
+        # Original __main__ block code starts here
+        old_prepared_encoder = os.path.join(MODEL_DIR, "encoder_prepared.onnx")
+        if os.path.exists(old_prepared_encoder):
+            # print(f"Removing old {old_prepared_encoder}") # This will now go to log_file
+            os.remove(old_prepared_encoder)
 
-    if not download_models(): print("Download failed. Exiting."); exit(1)
-    prepared_onnx_files = prepare_onnx_models()
-    if not prepared_onnx_files or not all(p and os.path.exists(p) for p in prepared_onnx_files.values()): print("ONNX preparation failed or some files are missing. Exiting."); exit(1)
-    calibration_files = create_dummy_calibration_data()
-    convert_to_rknn(prepared_onnx_files, calibration_files)
-    print("\n--- Conversion process finished ---")
-    # print(f"Source ONNX models in: {MODEL_DIR}"); print(f"Prepared ONNX models in: {MODEL_DIR} (*_prepared.onnx)")
-    # print(f"Calibration data in: {CALIB_DIR}"); print(f"Converted RKNN models in: {RKNN_MODEL_DIR}")
+        if not download_models(): 
+            print("Download failed. Exiting."); # This will now go to log_file
+            sys.stdout = original_stdout # Restore for exit message
+            sys.stderr = original_stderr
+            original_stdout.write("Download failed. Exiting. Check conv_output.log for details.\n")
+            exit(1)
+
+        prepared_onnx_files = prepare_onnx_models()
+        if not prepared_onnx_files or not all(p and os.path.exists(p) for p in prepared_onnx_files.values()): 
+            print("ONNX preparation failed or some files are missing. Exiting."); # This will now go to log_file
+            sys.stdout = original_stdout # Restore for exit message
+            sys.stderr = original_stderr
+            original_stdout.write("ONNX preparation failed. Exiting. Check conv_output.log for details.\n")
+            exit(1)
+            
+        calibration_files = create_dummy_calibration_data()
+        convert_to_rknn(prepared_onnx_files, calibration_files)
+        
+        print("\n--- Conversion process finished ---") # This will now go to log_file
+        # print(f"Source ONNX models in: {MODEL_DIR}"); # This will now go to log_file
+        # print(f"Prepared ONNX models in: {MODEL_DIR} (*_prepared.onnx)") # This will now go to log_file
+        # print(f"Calibration data in: {CALIB_DIR}"); # This will now go to log_file
+        # print(f"Converted RKNN models in: {RKNN_MODEL_DIR}") # This will now go to log_file
+        # Original __main__ block code ends here
+            
+    except Exception as e:
+        # If any error occurs, print it to original stderr
+        sys.stdout = original_stdout # Restore stdout to print error to console
+        sys.stderr = original_stderr
+        print(f"An error occurred during script execution or logging setup: {e}")
+        # Optionally re-raise the exception if you want the script to halt
+        # raise 
+    finally:
+        # Ensure an attempt to close the log file and restore stdout/stderr happens
+        if 'log_file' in locals() and log_file and not log_file.closed:
+            log_file.close()
+        sys.stdout = original_stdout
+        sys.stderr = original_stderr
+        print(f"--- Script output finished. Log saved to {log_file_path} ---") # This will go to console
