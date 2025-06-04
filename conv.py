@@ -299,7 +299,7 @@ def convert_encoder_to_4d_nchw(model, encoder_x_input_name):
     dims = x_input_value_info.type.tensor_type.shape.dim
     if len(dims) == 3:
         print(f"  Input '{encoder_x_input_name}' is 3D, converting to 4D NCHW definition.")
-        N, C, H, W_time = (ENCODER_BATCH_FOR_ONNX_INPUT, ENCODER_CHANNEL_FOR_ONNX_INPUT, 
+        N, C, H, W_time = (ENCODER_BATCH_FOR_ONNX_INPUT, ENCODER_CHANNEL_FOR_ONNX_INPUT,
                            ENCODER_FEATURE_DIM_FOR_ONNX_INPUT, ENCODER_TIME_LEN_FOR_ONNX_INPUT)
         x_input_value_info.type.tensor_type.shape.ClearField("dim")
         for val in [N, C, H, W_time]: x_input_value_info.type.tensor_type.shape.dim.add().dim_value = val
@@ -308,6 +308,26 @@ def convert_encoder_to_4d_nchw(model, encoder_x_input_name):
               dims[2].dim_value == ENCODER_FEATURE_DIM_FOR_ONNX_INPUT and dims[3].dim_value == ENCODER_TIME_LEN_FOR_ONNX_INPUT):
         print(f"  Input '{encoder_x_input_name}' is {len(dims)}D but not matching target NCHW or C!=1. Aborting.")
         return False
+
+    # Remove a potential Unsqueeze that was expanding the original 3D input
+    unsqueeze_node = next((n for n in model.graph.node
+                           if n.op_type == "Unsqueeze" and n.input and n.input[0] == encoder_x_input_name), None)
+    if unsqueeze_node:
+        unsq_out = unsqueeze_node.output[0]
+        print(f"  Removing leftover Unsqueeze node '{unsqueeze_node.name}' now that input is 4D.")
+        for node in model.graph.node:
+            for idx, inp in enumerate(node.input):
+                if inp == unsq_out:
+                    node.input[idx] = encoder_x_input_name
+        model.graph.node.remove(unsqueeze_node)
+        const_name = unsqueeze_node.input[1] if len(unsqueeze_node.input) > 1 else None
+        if const_name:
+            const_node = next((n for n in model.graph.node if const_name in n.output), None)
+            if const_node and all(const_name not in n.input for n in model.graph.node):
+                model.graph.node.remove(const_node)
+            init = next((i for i in model.graph.initializer if i.name == const_name), None)
+            if init and all(const_name not in n.input for n in model.graph.node):
+                model.graph.initializer.remove(init)
 
     initializers_to_remove = []; initializers_to_add = []
     for node_idx, node in enumerate(model.graph.node):
