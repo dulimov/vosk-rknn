@@ -9777,6 +9777,7 @@ InitialEncoderGraph: Graph: main_graph
 --- DEBUG: End of initial graph structure for encoder ---
 Attempting deep conversion for encoder input 'x' and Conv layers.
   Input 'x' is 3D, converting to 4D NCHW definition.
+  Removing leftover Unsqueeze node '/encoder_embed/Unsqueeze' now that input is 4D.
 --- DEBUG: Attributes of /encoder_embed/conv/0/Conv INSIDE convert_encoder_to_4d_nchw (after modification attempt) ---
   Node: /encoder_embed/conv/0/Conv, OpType: Conv
     dilations: [1, 1]
@@ -9794,8 +9795,6 @@ PostConvertEncoderGraph: Graph: main_graph
   PostConvertEncoderGraph: Node: /encoder_embed/conv/0/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: /encoder_embed/Constant, OpType: Constant
   PostConvertEncoderGraph: Node: Constant_2680, OpType: Constant
-  PostConvertEncoderGraph: Node: /encoder_embed/Constant_1, OpType: Constant
-  PostConvertEncoderGraph: Node: /encoder_embed/Unsqueeze, OpType: Unsqueeze
   PostConvertEncoderGraph: Node: /encoder_embed/conv/0/Conv, OpType: Conv
 !!!!!!!!!!!!!!!!!!!!   PostConvertEncoderGraph: TARGET NODE FOUND HERE: /encoder_embed/conv/0/Conv !!!!!!!!!!!!!!!!!!!!
     PostConvertEncoderGraph: Conv Attributes:
@@ -19578,8 +19577,6 @@ PostConvertEncoderGraph: Graph: main_graph
   Processing top-level node: /encoder_embed/conv/0/Constant, OpType: Constant
   Processing top-level node: /encoder_embed/Constant, OpType: Constant
   Processing top-level node: Constant_2680, OpType: Constant
-  Processing top-level node: /encoder_embed/Constant_1, OpType: Constant
-  Processing top-level node: /encoder_embed/Unsqueeze, OpType: Unsqueeze
   Processing top-level node: /encoder_embed/conv/0/Conv, OpType: Conv
     Skipping general checks for already processed target node: /encoder_embed/conv/0/Conv
   Processing top-level node: /encoder_embed/conv/3/Constant, OpType: Constant
@@ -27892,7 +27889,7 @@ PostConvertEncoderGraph: Graph: main_graph
   Processing top-level node: /encoder_proj/Add, OpType: Add
   ensure_correct_conv_attributes: Changes made to some Conv attributes (either specific or general).
 --- Sanity check for saved file: vosk_models_onnx/encoder_prepared.onnx ---
-  ERROR: ONNX Runtime failed to load vosk_models_onnx/encoder_prepared.onnx: [ONNXRuntimeError] : 1 : FAIL : Load model from vosk_models_onnx/encoder_prepared.onnx failed:Node (/encoder_embed/conv/0/Conv) Op (Conv) [ShapeInferenceError] Attribute dilations has incorrect size
+  ERROR: ONNX Runtime failed to load vosk_models_onnx/encoder_prepared.onnx: [ONNXRuntimeError] : 1 : FAIL : Node (/encoder_embed/conv/3/Sub_2) Op (Sub) [ShapeInferenceError] Incompatible dimensions
 
 --- Processing model: decoder ---
 --- Sanity check for saved file: vosk_models_onnx/decoder_prepared.onnx ---
@@ -27907,5 +27904,5 @@ PostConvertEncoderGraph: Graph: main_graph
 --- Converting to RKNN ---
 
 Processing encoder model: vosk_models_onnx/encoder_prepared.onnx
-I Loading :   0%|                                                           | 0/717 [00:00<?, ?it/s]I Loading : 100%|██████████████████████████████████████████████| 717/717 [00:00<00:00, 13636.09it/s]
-I    FoldConstant :   0%|                                                  | 0/5324 [00:00<?, ?it/s]I    FoldConstant :   0%|                                         | 1/5324 [00:00<00:16, 331.15it/s]
+I Loading :   0%|                                                           | 0/717 [00:00<?, ?it/s]I Loading :  77%|████████████████████████████████████▏          | 552/717 [00:00<00:00, 5455.25it/s]I Loading : 100%|███████████████████████████████████████████████| 717/717 [00:00<00:00, 3076.72it/s]
+I    FoldConstant :   0%|                                                  | 0/5323 [00:00<?, ?it/s]I    FoldConstant :   0%|                                          | 3/5323 [00:00<02:58, 29.76it/s]I    FoldConstant :   1%|▍                                       | 53/5323 [00:00<00:17, 304.75it/s]I    FoldConstant :   1%|▌                                       | 70/5323 [00:00<00:22, 234.43it/s]
