@@ -1,0 +1,5 @@
+numpy
+onnx
+onnxruntime
+huggingface_hub
+rknn-toolkit2
